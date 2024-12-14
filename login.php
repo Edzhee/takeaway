@@ -1,28 +1,28 @@
 <?php
 session_start();
-include 'includes/db.php'; // Включване на връзката с базата данни
+include 'includes/db.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Проверка дали потребителят вече е логнат
+
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
 
-// Инициализиране на съобщение за грешка
+
 $error_message = '';
 
-// Обработка на POST заявка
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    // Проверка за празни полета
+  
     if (empty($email) || empty($password)) {
         $error_message = "Моля, попълнете всички полета.";
     } else {
-        // Търсене на потребителя в базата данни
+        
         $sql = "SELECT * FROM users WHERE email = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
@@ -30,16 +30,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            // Ако потребителят съществува
+         
             $row = $result->fetch_assoc();
 
-            // Проверка на паролата
+           
             if (password_verify($password, $row['password'])) {
-                // Успешен вход
+             
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['username'] = $row['username'];
 
-                // Пренасочване
+            
                 header("Location: index.php");
                 exit;
             } else {
@@ -81,7 +81,7 @@ $conn->close();
     <div class="form-container">
         <h2 class="text-center">Вход в профила</h2>
 
-        <!-- Показване на съобщение за грешка -->
+  
         <?php if (!empty($error_message)): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <?php echo htmlspecialchars($error_message); ?>
@@ -89,7 +89,7 @@ $conn->close();
             </div>
         <?php endif; ?>
 
-        <!-- Форма за вход -->
+ 
         <form action="login.php" method="POST">
             <div class="mb-3">
                 <label for="email" class="form-label">Електронна поща</label>
