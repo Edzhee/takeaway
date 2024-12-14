@@ -11,7 +11,6 @@ if (isset($_SESSION['order_success'])) {
 
 
 
-// SQL заявка за извличане на всички продукти от менюто
 $sql = "SELECT * FROM menu_items";
 $result = $conn->query($sql);
 
@@ -24,9 +23,9 @@ $result = $conn->query($sql);
     <title>Takeaway Меню</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Оранжев хедър */
+      
         header {
-            background-color: #FFA500; /* Оранжев цвят */
+            background-color: #FFA500; 
             color: white;
             text-align: center;
             padding: 20px 0;
@@ -34,9 +33,9 @@ $result = $conn->query($sql);
     </style>
     <style>
     .card-img-top {
-        width: 100%; /* Автоматично се адаптира към ширината на контейнера */
-        height: 200px; /* Фиксирана височина */
-        object-fit: cover; /* Изрязва изображението, за да се побере в контейнера */
+        width: 100%; 
+        height: 200px; 
+        object-fit: cover;
     }
 </style>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -71,7 +70,7 @@ $result = $conn->query($sql);
         <h2>Нашето меню</h2>
         <div class="row">
             <?php
-            // Пример: Уверете се, че $result е дефинирана и съдържа стойности
+      
             if (isset($result) && $result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo '<div class="col-md-4">';
