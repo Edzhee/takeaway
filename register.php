@@ -1,25 +1,21 @@
 <?php
 session_start();
-include 'includes/db.php'; // Включваме връзката с базата данни
+include 'includes/db.php'; 
 
-// Проверка дали потребителят вече е логнат
 if (isset($_SESSION['user_id'])) {
     header("Location: index.php");
     exit;
 }
 
-// Инициализиране на съобщенията за грешки/успех
 $errors = [];
 $success_message = '';
 
-// Проверка за изпратени данни от формата
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = trim($_POST['username']);
     $email = trim($_POST['email']);
     $password = trim($_POST['password']);
     $password_confirm = trim($_POST['password_confirm']);
 
-    // Проверка за празни полета
     if (empty($username)) {
         $errors[] = "Моля, въведете потребителско име.";
     }
@@ -33,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = "Паролите не съвпадат.";
     }
 
-    // Проверка за съществуващ потребител с този имейл
     if (empty($errors)) {
         $sql = "SELECT * FROM users WHERE email = ?";
         $stmt = $conn->prepare($sql);
@@ -44,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result->num_rows > 0) {
             $errors[] = "Потребител с този имейл вече съществува.";
         } else {
-            // Ако няма грешки, добавяме потребителя
             $hashed_password = password_hash($password, PASSWORD_BCRYPT); // Хешираме паролата
             $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
@@ -99,7 +93,6 @@ $conn->close();
         <div class="form-container fade-in">
             <h2 class="text-center">Регистрация</h2>
 
-            <!-- Показване на грешки, ако има такива -->
             <?php if (!empty($errors)): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <ul>
@@ -111,7 +104,6 @@ $conn->close();
                 </div>
             <?php endif; ?>
 
-            <!-- Показване на съобщение за успех -->
             <?php if (!empty($success_message)): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <?php echo htmlspecialchars($success_message); ?>
@@ -119,7 +111,6 @@ $conn->close();
                 </div>
             <?php endif; ?>
 
-            <!-- Форма за регистрация -->
             <form action="register.php" method="POST" id="registerForm">
                 <div class="mb-3">
                     <label for="username" class="form-label">Потребителско име</label>
