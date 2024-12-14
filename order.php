@@ -1,23 +1,20 @@
 <?php
-session_start(); // Стартираме сесията
-include 'includes/db.php'; // Включваме връзката с базата данни
+session_start(); 
+include 'includes/db.php'; 
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
     exit;
 }
 
-// Проверка за наличието на параметър product_id
 if (!isset($_GET['product_id']) || empty($_GET['product_id'])) {
     echo "<p>Няма избран продукт!</p>";
-    echo "<p>Няма параметър 'product_id' в URL адреса. Текущ URL: " . $_SERVER['REQUEST_URI'] . "</p>"; // Покажи URL-то за диагностика
+    echo "<p>Няма параметър 'product_id' в URL адреса. Текущ URL: " . $_SERVER['REQUEST_URI'] . "</p>"; 
     exit;
 }
 
-// Извличаме и валидираме параметъра
 $product_id = intval($_GET['product_id']);
 
-// Проверка дали продуктът съществува
 $sql = "SELECT * FROM menu_items WHERE id = $product_id";
 $result = $conn->query($sql);
 
@@ -26,10 +23,8 @@ if ($result->num_rows == 0) {
     exit;
 }
 
-// Ако продуктът съществува, извличаме информацията
 $product = $result->fetch_assoc();
 
-// Показваме информацията за продукта
 ?>
 <!DOCTYPE html>
 <html lang="bg">
@@ -94,10 +89,8 @@ $product = $result->fetch_assoc();
     <h1>Поръчка на продукт: <?php echo htmlspecialchars($product['name']); ?></h1>
     
     <div class="product-info">
-        <!-- Изображение на продукта -->
         <img src="images/<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
 
-        <!-- Детайли за продукта -->
         <div class="details">
             <h3><?php echo htmlspecialchars($product['name']); ?></h3>
             <p><?php echo htmlspecialchars($product['description']); ?></p>
@@ -105,7 +98,6 @@ $product = $result->fetch_assoc();
         </div>
     </div>
 
-    <!-- Форма за поръчка -->
     <form action="order_process.php" method="POST">
         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
         <div class="mb-3">
