@@ -1,18 +1,17 @@
 <?php
 include('includes/db.php');
 
-// Проверка дали е подаден параметър за product_id
+
 if (isset($_GET['product_id'])) {
     $product_id = $_GET['product_id'];
 
-    // Извлечете подробности за меню артикула от базата данни
+  
     $query = "SELECT * FROM menu_items WHERE id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param("i", $product_id);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    // Проверете дали артикулът съществува
     if ($result->num_rows > 0) {
         $item = $result->fetch_assoc();
     } else {
@@ -30,11 +29,11 @@ if (isset($_GET['product_id'])) {
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-        // Анимация при зареждане на страницата
+      
         $(document).ready(function() {
-            // Плавно показване на целия блок с подробности за продукта
-            $('.menu-item-details').hide().fadeIn(1000);  // Плавно показване на целия блок за 1 секунда
-            $('.menu-item-image img').hide().slideDown(1000); // Плавно показване на изображението
+       
+            $('.menu-item-details').hide().fadeIn(1000);  
+            $('.menu-item-image img').hide().slideDown(1000); 
         });
     </script>
 
@@ -43,7 +42,7 @@ if (isset($_GET['product_id'])) {
     <title>Подробности за артикул</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        /* Основен стил */
+     
         body {
             font-family: 'Arial', sans-serif;
             background-color: #f9f9f9;
@@ -129,27 +128,27 @@ if (isset($_GET['product_id'])) {
     <div class="menu-item-details">
         <h1><?php echo htmlspecialchars($item['name']); ?></h1>
 
-        <!-- Изображение на меню артикул -->
+      
         <div class="menu-item-image">
             <img src="images/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>">
         </div>
 
-        <!-- Информация за меню артикула -->
+        
         <div class="menu-item-info">
             <p><strong>Описание:</strong> <?php echo nl2br(htmlspecialchars($item['description'])); ?></p>
             <p><strong>Цена:</strong> <?php echo number_format($item['price'], 2); ?> лв</p>
         </div>
 
-        <!-- Бутон за връщане назад -->
+     
         <a href="search.php" class="back-button">Назад към резултатите</a>
     </div>
 
 </body>
 <script>
 $(document).ready(function() {
-    // Показва елементи с плавен ефект на зареждане
-    $('.menu-item-details').hide().fadeIn(1000);  // Фейд ин на целия блок
-    $('.menu-item-image img').hide().slideDown(1000); // Фейд ин за изображението
+
+    $('.menu-item-details').hide().fadeIn(1000);  
+    $('.menu-item-image img').hide().slideDown(1000); 
 });
 </script>
 
@@ -158,6 +157,6 @@ $(document).ready(function() {
 
 
 <?php
-// Затворете връзката с базата данни
+
 $conn->close();
 ?>
