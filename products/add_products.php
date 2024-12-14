@@ -8,11 +8,10 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Извличаме всички продукти от менюто
-$sql = "SELECT * FROM menu_items"; // Проверете дали името на таблицата е правилно
-if ($result = $conn->query($sql)) { // Проверяваме дали заявката е успешна
-    if ($result->num_rows > 0) { // Проверяваме дали има продукти
-        // Извеждаме всички продукти
+
+$sql = "SELECT * FROM menu_items"; 
+if ($result = $conn->query($sql)) { 
+    if ($result->num_rows > 0) { 
     } else {
         echo "<p>Няма продукти в менюто.</p>";
     }
