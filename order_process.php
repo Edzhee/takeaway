@@ -1,28 +1,25 @@
 <?php
 session_start();
-include 'includes/db.php'; // Включваме връзката с базата данни
+include 'includes/db.php'; 
 
 if (isset($_POST['product_id'], $_POST['quantity']) && is_numeric($_POST['quantity'])) {
     $product_id = intval($_POST['product_id']);
     $quantity = intval($_POST['quantity']);
 
-    // Проверка дали продуктът съществува
     $sql = "SELECT * FROM menu_items WHERE id = $product_id";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $product = $result->fetch_assoc();
 
-        // Проверка за потребителския идентификатор
         if (!isset($_SESSION['user_id'])) {
-            $_SESSION['user_id'] = 1; // Временно задаваме фиктивен user_id за тестове
+            $_SESSION['user_id'] = 1; 
         }
 
         $user_id = $_SESSION['user_id'];
-        $customer_name = $_SESSION['customer_name'] ?? 'Guest'; // Ако няма име, използваме 'Guest'
+        $customer_name = $_SESSION['customer_name'] ?? 'Guest'; 
         $total_price = $product['price'] * $quantity;
 
-        // Вмъкваме поръчката в таблицата orders
         $sql = "INSERT INTO orders (customer_name, user_id, product_id, quantity, total_price, order_date, status) 
                 VALUES ('$customer_name', $user_id, $product_id, $quantity, $total_price, NOW(), 'pending')";
 
