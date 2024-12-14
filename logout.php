@@ -1,7 +1,7 @@
 <?php
 session_start();
-session_unset(); // Изчистваме всички сесийни данни
-session_destroy(); // Унищожаваме сесията
-header('Location: index.php'); // Пренасочваме към началната страница
+session_unset(); 
+session_destroy();
+header('Location: index.php'); 
 exit();
 ?>
