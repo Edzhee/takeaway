@@ -2,14 +2,12 @@
 session_start();
 include '../includes/db.php';
 
-// Проверяваме дали е изпратена заявка за търсене или за конкретен продукт
 if (isset($_GET['query'])) {
     // Търсене на продукти
     $query = $conn->real_escape_string($_GET['query']);
     $sql = "SELECT * FROM menu_items WHERE name LIKE '%$query%' OR description LIKE '%$query%'";
     $result = $conn->query($sql);
 } elseif (isset($_GET['product_id'])) {
-    // Показване на детайли за конкретен продукт
     $product_id = intval($_GET['product_id']);
     $sql = "SELECT * FROM menu_items WHERE id = $product_id";
     $result = $conn->query($sql);
@@ -19,12 +17,11 @@ if (isset($_GET['query'])) {
         $error_message = "Продуктът не съществува!";
     }
 } else {
-    // Показване на всички продукти по подразбиране
     $sql = "SELECT * FROM menu_items";
     $result = $conn->query($sql);
 }
 
-$conn->close(); // Затваряме връзката
+$conn->close(); 
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +37,6 @@ $conn->close(); // Затваряме връзката
 <div class="container mt-5">
     <h2>Продукти</h2>
 
-    <!-- Форма за търсене -->
     <form action="view_products.php" method="GET" class="mb-4">
         <div class="input-group">
             <input type="text" name="query" class="form-control" placeholder="Търсене на продукти..." value="<?php echo isset($_GET['query']) ? htmlspecialchars($_GET['query']) : ''; ?>" required>
@@ -48,7 +44,6 @@ $conn->close(); // Затваряме връзката
         </div>
     </form>
 
-    <!-- Съдържание -->
     <?php if (isset($error_message)): ?>
         <div class="alert alert-danger"><?php echo $error_message; ?></div>
     <?php endif; ?>
