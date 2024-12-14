@@ -1,12 +1,10 @@
 <?php
 session_start();
-include 'includes/db.php'; // Включи връзката с базата данни
+include 'includes/db.php'; 
 
-// Проверка дали има подадена заявка за търсене
 if (isset($_GET['query'])) {
     $search_query = $_GET['query'];
 
-    // SQL заявка за търсене в `menu_items` по име или описание
     $sql = "SELECT * FROM menu_items WHERE name LIKE ? OR description LIKE ?";
     $stmt = $conn->prepare($sql);
     $search_param = '%' . $search_query . '%';
